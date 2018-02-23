@@ -16,7 +16,7 @@ pipeline {
 
         stage ('Build') {
             steps {
-                    sh 'cd NumberGenerator & mvn install'
+                    sh 'cd NumberGenerator && mvn install'
             }
              post {
                 success {

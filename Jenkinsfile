@@ -21,6 +21,11 @@ pipeline {
         
       }
     }
+    stage('Quality Analyse') {
+      steps {
+        sh 'cd NumberGenerator && mvn clean verify sonar:sonar'
+      }
+    }
   }
   tools {
     maven 'maven3.1.1'

@@ -21,11 +21,6 @@ pipeline {
         
       }
     }
-    stage('Quality Analyze') {
-      steps {
-        waitForQualityGate()
-      }
-    }
   }
   tools {
     maven 'maven3.1.1'

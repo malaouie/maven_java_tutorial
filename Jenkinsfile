@@ -1,32 +1,34 @@
 pipeline {
-    agent any
-    tools {
-        maven 'maven3.1.1'
-        jdk 'java8'
-    }
-    stages {
-        stage ('Initialize') {
-            steps {
-                sh '''
+  agent any
+  stages {
+    stage('Initialize') {
+      steps {
+        sh '''
                     echo "PATH = %PATH%"
                     echo "M2_HOME = %M2_HOME%"
                 '''
-            }
+      }
+    }
+    stage('Build') {
+      steps {
+        sh 'cd NumberGenerator && mvn install'
+      }
+      post {
+        success {
+          junit 'NumberGenerator/target/surefire-reports/*.xml'
+          
         }
-
-        stage ('Build') {
-            steps {
-                    sh 'cd NumberGenerator && mvn install'
-            }
-             post {
-                success {
-                    junit 'NumberGenerator/target/surefire-reports/*.xml'
-                        }
-                 }
-               
-
-           
-            }
-        }
-    
+        
+      }
+    }
+    stage('Quality Analyze') {
+      steps {
+        waitForQualityGate()
+      }
+    }
+  }
+  tools {
+    maven 'maven3.1.1'
+    jdk 'java8'
+  }
 }
